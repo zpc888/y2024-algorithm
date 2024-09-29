@@ -38,7 +38,7 @@ import java.util.Arrays;
  * </p>
  *
  */
-public class Q327_CountOfRangeSum {
+public class Q0327_CountOfRangeSum {
 
     public int countRangeSum(int[] nums, int lower, int upper) {
         return countRangeSum_in_mergeSort(nums, lower, upper);
@@ -118,7 +118,7 @@ public class Q327_CountOfRangeSum {
     }
 
     public static void main(String[] args) {
-        Q327_CountOfRangeSum q = new Q327_CountOfRangeSum();
+        Q0327_CountOfRangeSum q = new Q0327_CountOfRangeSum();
         int cnt1 = 0;
         int cnt2 = 0;
         int[] nums = new int[]{-2147483647,0,-2147483647,2147483647};
