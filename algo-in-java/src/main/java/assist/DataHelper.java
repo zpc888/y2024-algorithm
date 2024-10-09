@@ -2,7 +2,6 @@ package assist;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class DataHelper {
     private DataHelper() {
@@ -34,6 +33,13 @@ public class DataHelper {
         Set<String> uniqChecker = null;
         if (unique) {
             uniqChecker = new HashSet<>();
+            int maxUniq = 0;
+            for (int i = minLen; i <= maxLen; i++) {
+                maxUniq += (int) Math.pow(wordChars.length(), i);
+            }
+            if (fixedSize > maxUniq) {
+                throw new IllegalStateException("Cannot generate unique words more than " + maxUniq);
+            }
         }
         for (int i = 0; i < fixedSize; i++) {
             ret[i] = generateOneWord(minLen, maxLen, wordChars, uniqChecker);
@@ -58,8 +64,22 @@ public class DataHelper {
         return generateOneWord(minLen, maxLen, wordChars, uniqChecker);
     }
 
+    public static int[] generateRandomUniqData(int maxSize, int min, int max) {
+        if (max - min + 1 < maxSize) {
+            throw new IllegalStateException("Cannot generate unique data more than " + (max - min + 1) + " with size " + maxSize);
+        }
+        return doGenerateRandomData(maxSize, min, max, new HashSet<Integer>());
+    }
+
     public static int[] generateRandomData(int maxSize, int min, int max) {
+        return doGenerateRandomData(maxSize, min, max, null);
+    }
+
+    private static int[] doGenerateRandomData(int maxSize, int min, int max, HashSet<Integer> uniqChecker) {
         int size = (int) (Math.random() * (maxSize + 1));
+        if (uniqChecker != null && max - min + 1 < size) {
+            return doGenerateRandomData(maxSize, min, max, uniqChecker);        // re-gen since caller already checks it has solution for maxSize
+        }
         int[] data = new int[size];
         for (int i = 0; i < size; i++) {
             data[i] = (int) (Math.random() * (max - min + 1)) + min;
