@@ -1,7 +1,7 @@
 package algo.dp;
 
 import assist.DataHelper;
-import assist.PerfTest;
+import assist.TestHelper;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -185,18 +185,18 @@ public class MaxSumFromEitherEnd {
         final MaxSumFromEitherEnd m = new MaxSumFromEitherEnd();
         final int testCycles = 10_000;
         m.versionToRun = 1;
-        Duration d1 = PerfTest.repeatRun(testCycles, () -> {
+        Duration d1 = TestHelper.repeatRun(testCycles, () -> {
             m.win(input);
         });
         m.versionToRun = 2;
-        Duration d2 = PerfTest.repeatRun(testCycles, () -> {
+        Duration d2 = TestHelper.repeatRun(testCycles, () -> {
             m.win(input);
         });
         m.versionToRun = 3;
-        Duration d3 = PerfTest.repeatRun(testCycles, () -> {
+        Duration d3 = TestHelper.repeatRun(testCycles, () -> {
             m.win(input);
         });
-        PerfTest.repeatRunWithResultCheck(100, () -> {
+        TestHelper.repeatRunWithResultCheck(100, () -> {
             return m.win(input);
         }, ((result, runNo) -> {
             DataHelper.assertTrue(result == 32, "failed on perf test - " + runNo + " with result "

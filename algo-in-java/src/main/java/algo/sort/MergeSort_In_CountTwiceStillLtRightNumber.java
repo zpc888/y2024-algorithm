@@ -1,7 +1,7 @@
 package algo.sort;
 
 import assist.DataHelper;
-import assist.PerfTest;
+import assist.TestHelper;
 
 import java.time.Duration;
 
@@ -98,8 +98,8 @@ public class MergeSort_In_CountTwiceStillLtRightNumber {
         for (int i = 0; i < testCycles; i++) {
             data[i] = DataHelper.generateRandomData(1000, -1000, 1000000);
         }
-        Duration bf = PerfTest.test(data, counter::bruteForce);
-        Duration sol = PerfTest.test(data, counter::solution);
+        Duration bf = TestHelper.test(data, counter::bruteForce);
+        Duration sol = TestHelper.test(data, counter::solution);
         System.out.println("Brute force: " + bf.toMillis() + " ms");
         System.out.println("Solution : " + sol.toMillis() + " ms");
     }

@@ -1,7 +1,7 @@
 package leetcode;
 
 import assist.DataHelper;
-import assist.PerfTest;
+import assist.TestHelper;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -173,8 +173,8 @@ public class Q0327_CountOfRangeSum {
         // when ~ 200, they are similar
         // but when > 1000, merge sort is much faster than brute force.
         // // when length = 2000, Brute force PT4.9 vs merge sort PT0.99, i.e. 5 times faster
-        Duration d1 = PerfTest.test(inputData, arr -> q.countRangeSum_in_bruteForce(arr, lower, upper));
-        Duration d2 = PerfTest.test(inputData, arr -> q.countRangeSum(arr, lower, upper));
+        Duration d1 = TestHelper.test(inputData, arr -> q.countRangeSum_in_bruteForce(arr, lower, upper));
+        Duration d2 = TestHelper.test(inputData, arr -> q.countRangeSum(arr, lower, upper));
         System.out.println("brute force: " + d1);
         System.out.println("merge sort:  " + d2);
     }

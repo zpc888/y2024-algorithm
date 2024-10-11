@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class PerfTest {
+public class TestHelper {
     public static Duration test(int[][] listOfNums, Consumer<int[]> consumer) {
         long start = getAndPrintStartTime();
         for (int[] nums : listOfNums) {
@@ -24,6 +24,13 @@ public class PerfTest {
         Duration ret = Duration.ofNanos(System.nanoTime() - start);
         System.out.println("<<< End at: " + LocalTime.now() + ", duration: " + ret);
         return ret;
+    }
+
+    public static <T> void checkRun(Supplier<T> resultProducer, Consumer<T> resultChecker) {
+        T result = resultProducer.get();
+        if (resultChecker != null) {
+            resultChecker.accept(result);
+        }
     }
 
     public static <T> Duration timeRunWithCheck(Supplier<T> resultProducer, Consumer<T> resultChecker) {

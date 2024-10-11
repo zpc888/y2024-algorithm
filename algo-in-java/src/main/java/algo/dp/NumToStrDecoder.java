@@ -1,6 +1,6 @@
 package algo.dp;
 
-import assist.PerfTest;
+import assist.TestHelper;
 
 import java.time.Duration;
 import java.util.function.BiConsumer;
@@ -152,15 +152,15 @@ public class NumToStrDecoder {
 		NumToStrDecoder n = new NumToStrDecoder();
 		n.versionToRun = 1;
 		final String digits = "1234561237891";
-		Duration d1 = PerfTest.repeatRun(testCycles, () -> {
+		Duration d1 = TestHelper.repeatRun(testCycles, () -> {
 			n.decodeDigitsToStr(digits);
 		});
 		n.versionToRun = 2;
-		Duration d2 = PerfTest.repeatRun(testCycles, () -> {
+		Duration d2 = TestHelper.repeatRun(testCycles, () -> {
 			n.decodeDigitsToStr(digits);
 		});
 		n.versionToRun = 3;
-		Duration d3 = PerfTest.repeatRun(testCycles, () -> {
+		Duration d3 = TestHelper.repeatRun(testCycles, () -> {
 			n.decodeDigitsToStr(digits);
 		});
 		System.out.println("Perf testing v1 vs v2 vs v3 ============");

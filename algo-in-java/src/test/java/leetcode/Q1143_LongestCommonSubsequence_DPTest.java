@@ -1,6 +1,6 @@
 package leetcode;
 
-import assist.PerfTest;
+import assist.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -44,14 +44,14 @@ class Q1143_LongestCommonSubsequence_DPTest {
     @Disabled("Time limit exceeded if no DP")
     @Test
     void testTimeLimitExceededNoDP() {
-        Duration d = PerfTest.timeRun(() -> sol.processV1_noDP(text1.toCharArray(), text2.toCharArray()
+        Duration d = TestHelper.timeRun(() -> sol.processV1_noDP(text1.toCharArray(), text2.toCharArray()
                 , text1.length() - 1, text2.length() - 1));
         System.out.println("Duration: " + d.toSeconds());
     }
 
     @Test
     void testTimeLimitExceededNoDP_InDP() {
-        Duration d = PerfTest.timeRun(() -> sol.processV2_DP(text1.toCharArray(), text2.toCharArray()));
+        Duration d = TestHelper.timeRun(() -> sol.processV2_DP(text1.toCharArray(), text2.toCharArray()));
         System.out.println("Duration: " + d.toMillis());    // DP takes 6 ms; NO DP takes over 30 minutes (still not finished and was killed by me)
     }
 
