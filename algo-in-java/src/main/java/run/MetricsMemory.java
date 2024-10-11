@@ -8,4 +8,5 @@ import java.lang.annotation.Target;
 public @interface MetricsMemory {
     double mb();
     double beats() default -1;
+    String description() default "";
 }
