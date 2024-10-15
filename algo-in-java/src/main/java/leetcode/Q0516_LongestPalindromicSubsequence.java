@@ -30,15 +30,16 @@ public class Q0516_LongestPalindromicSubsequence {
 		for (int i = 0; i < len; i++) {
 			dp[i][i] = 1;
 		}
-		for (int step = 1; step < len; step++) {
+		for (int toGap = 1; toGap < len; toGap++) {
 			for (int i = 0; i < len - 1; i++) {
-				if (i + step >= len) {
+				int to = i + toGap;
+				if (to >= len) {
 					break;
 				}
-				if (a[i] == a[i+step]) {
-					dp[i][i+step] = 2 + dp[i + 1][i + step - 1];
+				if (a[i] == a[to]) {
+					dp[i][to] = 2 + dp[i + 1][to - 1];
 				} else {
-					dp[i][i+step] = Math.max(dp[i][i+step-1], dp[i+1][i+step]);
+					dp[i][to] = Math.max(dp[i][to-1], dp[i+1][to]);
 				}
 			}
 		}

@@ -10,4 +10,5 @@ public @interface MetricsRuntime {
     int ms();
     double beats() default -1;
     String description() default "";
+    String runAt() default "";
 }
