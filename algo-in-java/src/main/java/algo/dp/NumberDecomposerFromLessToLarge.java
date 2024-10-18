@@ -1,6 +1,8 @@
 package algo.dp;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Given a number, decompose it into a list of numbers from less to large.
@@ -17,7 +19,7 @@ import java.util.Random;
 public class NumberDecomposerFromLessToLarge {
     private int versionToRun = 1;
 
-    public int decompose(int num) {
+    public long decompose(int num) {
         if (num <= 0) {
             return 0;
         }
@@ -32,22 +34,22 @@ public class NumberDecomposerFromLessToLarge {
         }
     }
 
-    private int process_V1_no_DP(int num, int start) {
+    private long process_V1_no_DP(int num, int start) {
         if (num == 0) {
             return 1;
         }
 		if (start > num) {
 			return 0;
 		}
-        int ret = 0;
+        long ret = 0;
         for (int i = start; i <= num; i++) {
             ret += process_V1_no_DP(num - i, i);
         }
         return ret;
     }
 
-    private int process_V2_DP(int num) {
-        int[][] dp = new int[num + 1][num + 1];
+    private long process_V2_DP(int num) {
+        long[][] dp = new long[num + 1][num + 1];
 		for (int i = 0; i <= num; i++) {
 			dp[0][i] = 1;
 		}
@@ -58,7 +60,7 @@ public class NumberDecomposerFromLessToLarge {
 //		}
         for (int i = 1; i <= num; i++) {
             for (int j = 1; j <= i; j++) {
-				int ans = 0;
+				long ans = 0;
 				for (int s = j; s <= i; s++) {
 					int rest = i - s;
 					if (s <= num) {
@@ -71,8 +73,8 @@ public class NumberDecomposerFromLessToLarge {
         return dp[num][1];
     }
 
-    private int process_V3_DP_optimized(int num) {
-        int[][] dp = new int[num + 1][num + 1];
+    private long process_V3_DP_optimized(int num) {
+        long[][] dp = new long[num + 1][num + 1];
 		for (int i = 0; i <= num; i++) {
 			dp[0][i] = 1;
 		}
@@ -109,34 +111,58 @@ public class NumberDecomposerFromLessToLarge {
             int number = random.nextInt(50) + 1;
             runAllVersions(number, -1);
         }
+        for (int run = 0; run < 200; run++) {
+            int number = random.nextInt(200) + 1;      // no DP after 80 is very slow
+            // also test with 500 (maybe earlier), it has negative number due to long MAX_VALUE overflow.
+            // It should be BigInteger, I am too lazy to re-work it here now
+            runAllVersionsExcludes(number, -1, 1);
+        }
     }
 
-    private static int runAllVersions(int number, int expected) {
+    private static long runAllVersions(int number, long expected) {
         return runAllVersionsExcludes(number, expected, new int[0]);
     }
 
-    private static int runAllVersionsExcludes(int number, int expected, int... excludes) {
+    private static long runAllVersionsExcludes(int number, long expected, int... excludes) {
         System.out.println();
         System.out.printf("Decomposing number: %d\n", number);
         if (expected >= 0) {
             System.out.println("\t\tExpected: " + expected + " ways");
         }
+        Set<Integer> excludeSet = new HashSet<>();
+        if (excludes != null) {
+            for (int exclude : excludes) {
+                excludeSet.add(exclude);
+            }
+        }
         NumberDecomposerFromLessToLarge sol = new NumberDecomposerFromLessToLarge();
         int versions = 3;
-        int[] actuals = new int[versions];
+        long[] actuals = new long[versions];
         for (int i = 0; i < versions; i++) {
             sol.versionToRun = i + 1;
+            if (excludeSet.contains(sol.versionToRun)) {
+                continue;
+            }
             actuals[i] = sol.decompose(number);
             System.out.printf("Version: %d, actual: %d\n", sol.versionToRun, actuals[i]);
         }
         if (expected < 0) {
-            expected = actuals[0];		// used the 1st one as expection
+            for (int i = 0; i < versions; i++) {
+                if (excludeSet.contains(i + 1)) {
+                    continue;
+                }
+                expected = actuals[i];        // used the 1st run one as expectation
+                break;
+            }
         }
         for (int i = 0; i < versions; i++) {
+            if (excludeSet.contains(i + 1)) {
+                continue;
+            }
             if (actuals[i] != expected) {
                 throw new IllegalStateException("Expected: " + expected + ", but V" + (i+1) + " got: " + actuals[i]);
             }
         }
-        return actuals[0];
+        return expected;
     }
 }

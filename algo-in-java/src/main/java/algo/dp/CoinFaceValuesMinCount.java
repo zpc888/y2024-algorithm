@@ -92,9 +92,9 @@ public class CoinFaceValuesMinCount {
 	}
 
 	public static void main(String[] args) {
-		runAllTests(new int[]{1, 2, 5}, 11, 3);
-		runAllTests(new int[]{10, 3, 5}, 12, 4);
-		runAllTests(new int[]{10, 2, 4, 6, 8}, 7, Integer.MAX_VALUE);
+		runAllVersions(new int[]{1, 2, 5}, 11, 3);
+		runAllVersions(new int[]{10, 3, 5}, 12, 4);
+		runAllVersions(new int[]{10, 2, 4, 6, 8}, 7, Integer.MAX_VALUE);
 
 		verifyWithHighVolumes();
 	}
@@ -104,11 +104,11 @@ public class CoinFaceValuesMinCount {
 		for (int run = 0; run < 10_000; run++) {
 			int[] coins = DataHelper.generateRandomData(8, 1, 20);
 			int goal = random.nextInt(50) + 2;
-			runAllTests(coins, goal, -1);
+			runAllVersions(coins, goal, -1);
 		}
 	}
 
-	private static int runAllTests(int[] coins, int goal, int expected) {
+	private static int runAllVersions(int[] coins, int goal, int expected) {
 		System.out.println();
 		System.out.printf("Coins: %s, Goal: %d\n", Arrays.toString(coins), goal);
 		if (expected >= 0) {
