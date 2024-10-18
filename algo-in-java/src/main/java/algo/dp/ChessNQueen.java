@@ -1,5 +1,8 @@
 package algo.dp;
 
+import assist.TestHelper;
+
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -28,14 +31,16 @@ public class ChessNQueen {
             return 0;
         }
         if (versionToRun == 1) {
-            return process_v1_no_DP(n, new int[n], 0);
+			return process_v1_no_DP(n, new int[n], 0);
+		} else if (versionToRun == 2) {
+				return process_v2_no_DP_Constant_Time_Optimized(n);
         } else {
             throw new IllegalStateException("Unsupported version: " + versionToRun);
         }
     }
 
 	/*
-	 * No DP version since it needs (int[] cols, int row)
+	 * No DP version since it needs (int[] cols, int row). Its time complexity is O(n^n), space O(n)
 	 */
     private int process_v1_no_DP(int n, int[] cols, int row) {
         if (row == n) {
@@ -51,6 +56,37 @@ public class ChessNQueen {
 		return count;
     }
 
+	/**
+	 *  Still O(n^n) time complexity, but optimized to O(1) space complexity.
+	 *  The constant time during n^n operations will be dramatically reduced.
+	 */
+	private int process_v2_no_DP_Constant_Time_Optimized(int n) {
+		if (n < 1) {
+			return 0;
+		} else if (n > 32) {
+			throw new IllegalArgumentException("n is too large: " + n);
+		}
+		int target = n == 32 ? -1 : (1 << n) - 1;		// 32 bits, all 1s
+		return v2NoDP(target, 0, 0, 0);
+	}
+
+	// left diagonal and right diagonal are only applicable to the next row, not all rows in matrix
+	private int v2NoDP(int target, int sel, int leftDiag, int rightDiag) {
+		if (target == sel) {
+			return 1;
+		}
+		int ret = 0;
+		int allowed = target & (~(sel | leftDiag | rightDiag));
+		while (allowed != 0) {
+			int rightMostOne = allowed & (~allowed + 1);
+			allowed -= rightMostOne;
+			ret += v2NoDP(target, sel | rightMostOne, 
+					(leftDiag | rightMostOne) << 1,			// 0 1 .. to 1 ..
+					(rightDiag | rightMostOne) >>> 1);      // 1 0 .. to 0 1 0 ..
+		}
+		return ret;
+	}
+
 	private boolean isValid(int[] cols, int row) {
 		int col = cols[row];
 		for (int i = 0; i < row; i++) {
@@ -64,7 +100,7 @@ public class ChessNQueen {
 
 
 	public static void main(String[] args) {
-//		runAllVersions(1, 1);
+		runAllVersions(1, 1);
 		runAllVersions(2, 0);
 		runAllVersions(3, 0);
 		runAllVersions(4, 2);
@@ -84,9 +120,30 @@ public class ChessNQueen {
 			runAllVersions(random.nextInt(10), -1);
 		}
 		for (int run = 0; run < 10; run++) {
-			runAllVersionsExcludes(random.nextInt(100),
+			runAllVersionsExcludes(random.nextInt(16),
 					-1, 1);
 		}
+		performMeasure();
+
+	}
+
+	private static void performMeasure() {
+		System.out.println("===================================== Measure performance ===============================");
+		final ChessNQueen sol = new ChessNQueen();
+		final int n = 15;
+		Duration d1 = TestHelper.timeRun(() -> {
+			sol.versionToRun = 1;
+			int result = sol.solution(n);
+			System.out.printf("Version-%d: %d queens on %dX%d board, ways: %d\n", sol.versionToRun, n, n, n, result);
+		});
+		System.out.println("\tDuration: " + d1.toMillis() );
+		System.out.println("---------------------- .VS. ----------------------------");
+		Duration d2 = TestHelper.timeRun(() -> {
+			sol.versionToRun = 2;
+			int result = sol.solution(n);
+			System.out.printf("Version-%d: %d queens on %dX%d board, ways: %d\n", sol.versionToRun, n, n, n, result);
+		});
+		System.out.println("\tDuration: " + d2.toMillis() );	// D1 = 25.039 seconds; D2 = 1.101 second  (n = 15) (22.7 times faster)
 	}
 
 	private static int runAllVersions(int n, int expected) {
@@ -108,7 +165,7 @@ public class ChessNQueen {
 			}
 		}
 		ChessNQueen sol = new ChessNQueen();
-		int versions = 1;
+		int versions = 2;
 		int[] actuals = new int[versions];
 		for (int i = 0; i < versions; i++) {
 			sol.versionToRun = i + 1;
