@@ -110,6 +110,8 @@ public class ChessNQueen {
 		runAllVersions(8, 92);
 
 		verifyWithHighVolumes();
+
+		performMeasure();
 	}
 
 	private static boolean silent = false;
@@ -123,8 +125,6 @@ public class ChessNQueen {
 			runAllVersionsExcludes(random.nextInt(16),
 					-1, 1);
 		}
-		performMeasure();
-
 	}
 
 	private static void performMeasure() {
