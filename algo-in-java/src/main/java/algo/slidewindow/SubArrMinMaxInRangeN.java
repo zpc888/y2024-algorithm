@@ -1,4 +1,4 @@
-package algo.slidewindown;
+package algo.slidewindow;
 
 
 import assist.BaseSolution;
@@ -121,6 +121,28 @@ public class SubArrMinMaxInRangeN extends BaseSolution<Integer> {
                     () -> sol.numOfSubArrs(arr, n),
                     null);
         }
+
+		int cycles = 100;
+		int[][] arrs = new int[cycles][];
+		int[] ns = new int[cycles];
+		for (int i = 0; i < cycles; i++) {
+			arrs[i] = DataHelper.generateRandomData(1_000, 1, 10_000);
+			ns[i] = random.nextInt(500);
+		}
+
+		sol.performMeasure("Performance Test",
+				() -> {
+					for (int i = 0; i < cycles; i++) {
+						sol.numOfSubArrs(arrs[i], ns[i]);
+					}
+					return null;
+				},
+				null);
+
+//		================================ performance Report ==========================
+//		Version-1: Duration: PT3.013108756S     O(N^3)
+//		Version-2: Duration: PT0.000162627S     O(N^2)
+//		Version-3: Duration: PT0.010948444S     O(N)  (sliding window constant time is much bigger than V.2)
     }
 
 }

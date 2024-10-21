@@ -1,4 +1,4 @@
-package algo.slidewindown;
+package algo.slidewindow;
 
 import assist.BaseSolution;
 import assist.DataHelper;
