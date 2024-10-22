@@ -82,7 +82,14 @@ public class DataHelper {
         }
         int[] data = new int[size];
         for (int i = 0; i < size; i++) {
-            data[i] = (int) (Math.random() * (max - min + 1)) + min;
+            int tmp = (int) (Math.random() * (max - min + 1)) + min;
+            if (uniqChecker != null) {
+                while (uniqChecker.contains(tmp)) {
+                    tmp = (int) (Math.random() * (max - min + 1)) + min;
+                }
+                uniqChecker.add(tmp);
+            }
+            data[i] = tmp;
         }
         return data;
     }
