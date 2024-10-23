@@ -24,7 +24,7 @@ public abstract class BaseSolution<R> {
 //
 //    }
 
-    protected void performMeasure(String title, Supplier<R> run, int... excludeVersions) {
+    public void performMeasure(String title, Supplier<R> run, int... excludeVersions) {
         Set<Integer> excludeSet = new HashSet<>();
         if (excludeVersions != null) {
             for (int exclude : excludeVersions) {
@@ -55,7 +55,7 @@ public abstract class BaseSolution<R> {
         System.out.println();
     }
 
-    protected R runAllVersions(String title, Supplier<R> run, R expected) {
+    public R runAllVersions(String title, Supplier<R> run, R expected) {
         return runAllVersionsExcludes(title, run, expected, new int[0]);
     }
 
@@ -67,7 +67,7 @@ public abstract class BaseSolution<R> {
         return expected == actual || (expected != null && expected.equals(actual));
     }
 
-    protected R runAllVersionsExcludes(String title, Supplier<R> run, R expected, int... excludeVersions) {
+    public R runAllVersionsExcludes(String title, Supplier<R> run, R expected, int... excludeVersions) {
         if (!silent) {
             System.out.println();
             System.out.printf("===================== %s ===============%n", title);
