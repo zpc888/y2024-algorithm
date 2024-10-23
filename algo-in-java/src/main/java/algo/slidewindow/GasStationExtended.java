@@ -103,7 +103,7 @@ public class GasStationExtended extends BaseSolution<List<Integer>> {
 		for (int i = 0; i < cycles; i++) {
 			int[] tmp = new int[0];
 			while (tmp.length < 2) {
-				tmp = DataHelper.generateRandomData(32, 1, 20);
+				tmp = DataHelper.genRandomSizeIntArr(32, 1, 20);
 			}
 			ints[i] = tmp;
 		}

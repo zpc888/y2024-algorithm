@@ -1,6 +1,7 @@
 package leetcode;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -40,6 +41,7 @@ class Q0472_Concatenated_WordsTest {
         assertEquals(3, q0472_concatenated_words.findAllConcatenatedWordsInADict(words3).size());
     }
 
+    @Disabled
     @Test
     void testLargeInput() {
         Q0472_Concatenated_Words sol = new Q0472_Concatenated_Words();

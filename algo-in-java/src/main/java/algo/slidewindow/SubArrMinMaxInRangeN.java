@@ -115,7 +115,7 @@ public class SubArrMinMaxInRangeN extends BaseSolution<Integer> {
         int runCycles = 10_000;
         Random random = new Random();
         for (int i = 0; i < runCycles; i++) {
-            int[] arr = DataHelper.generateRandomData(100, 1, 10000);
+            int[] arr = DataHelper.genRandomSizeIntArr(100, 1, 10000);
             int n = random.nextInt(500);
             sol.runAllVersions("Random " + (i + 1) + " with n=" + n + " and arr=" + Arrays.toString(arr),
                     () -> sol.numOfSubArrs(arr, n),
@@ -126,7 +126,7 @@ public class SubArrMinMaxInRangeN extends BaseSolution<Integer> {
 		int[][] arrs = new int[cycles][];
 		int[] ns = new int[cycles];
 		for (int i = 0; i < cycles; i++) {
-			arrs[i] = DataHelper.generateRandomData(1_000, 1, 10_000);
+			arrs[i] = DataHelper.genRandomSizeIntArr(1_000, 1, 10_000);
 			ns[i] = random.nextInt(500);
 		}
 

@@ -95,7 +95,7 @@ public class LongestSubStrContainingNChars extends BaseSolution<Integer> {
 		verify(sol, "cbbebi", 3, 5);
 		verify(sol, "cbbebi", 7, 6);
 
-		String[] words = DataHelper.generateRandomWords(10000, 1, 100,
+		String[] words = DataHelper.genFixedSizeStrArr(10000, 1, 100,
 				"abcdefghijklmnopqrstuvwxyz");
 		Random random = new Random();
 		int i = 0;

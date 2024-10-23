@@ -63,7 +63,7 @@ public class MaxCountOfOverlapRange {
         }
         int testCycles = 100_000;
         for (int i = 0; i < testCycles; i++) {
-            int[] data1 = DataHelper.generateRandomData(200, -100, 1000);
+            int[] data1 = DataHelper.genRandomSizeIntArr(200, -100, 1000);
             if (data1.length < 2) {
                 continue;
             }

@@ -16,8 +16,8 @@ public class TreeHelper {
     }
 
     private static TreeNode doGenTree(int maxSize, int minVal, int maxVal, boolean uniq) {
-        int[] data = uniq ? DataHelper.generateRandomUniqData(maxSize, minVal, maxVal)
-                : DataHelper.generateRandomData(maxSize, minVal, maxVal);
+        int[] data = uniq ? DataHelper.genRandomSizeIntArrUniq(maxSize, minVal, maxVal)
+                : DataHelper.genRandomSizeIntArr(maxSize, minVal, maxVal);
         if (data.length == 0) {
             return null;
         }

@@ -95,11 +95,11 @@ public class SplitArrayIntoTwoWithClosestItemNumberAndSum {
 //		silent = true;
 		Random random = new Random();
 		for (int run = 0; run < 500; run++) {
-			runAllVersions(DataHelper.generateRandomData(16, 1, 1000), -1);
+			runAllVersions(DataHelper.genRandomSizeIntArr(16, 1, 1000), -1);
 		}
 		for (int run = 0; run < 10; run++) {
 			// impossible to run no-DP versions with 200 elements array
-			runAllVersionsExcludes(DataHelper.generateRandomData(100, 1, 1000),
+			runAllVersionsExcludes(DataHelper.genRandomSizeIntArr(100, 1, 1000),
 					-1, 1);
 		}
 	}

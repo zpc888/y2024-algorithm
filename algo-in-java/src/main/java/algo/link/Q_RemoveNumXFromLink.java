@@ -52,7 +52,7 @@ public class Q_RemoveNumXFromLink {
         System.out.println("Test with a number of random array: 1000 times");
         Q_RemoveNumXFromLink removeNumXFromLink = new Q_RemoveNumXFromLink();
         for (int i = 0; i < 1000; i++) {
-            int[] arr = DataHelper.generateRandomData(100, -10000, 10000);
+            int[] arr = DataHelper.genRandomSizeIntArr(100, -10000, 10000);
             if (arr.length == 0) {
                 continue;
             }

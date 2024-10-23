@@ -16,11 +16,35 @@ public class DataHelper {
         return copy;
     }
 
-    public static String[] generateRandomWords(int fixedSize, int minLen, int maxLen, String wordChars) {
+    public static String[] genFixedSizeLowerCaseArr(int fixedSize, int minLen, int maxLen) {
+        return genFixedSizeStrArr(fixedSize, minLen, maxLen, "abcdefghijklmnopqrstuvwxyz");
+    }
+
+    public static String[] genFixedSizeUpperCaseArr(int fixedSize, int minLen, int maxLen) {
+        return genFixedSizeStrArr(fixedSize, minLen, maxLen, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    }
+
+    public static String[] genFixedSizeMixedCaseArr(int fixedSize, int minLen, int maxLen) {
+        return genFixedSizeStrArr(fixedSize, minLen, maxLen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    }
+
+    public static String[] genFixedSizeLowerCaseArrUniq(int fixedSize, int minLen, int maxLen) {
+        return genFixedSizeStrArrUniq(fixedSize, minLen, maxLen, "abcdefghijklmnopqrstuvwxyz");
+    }
+
+    public static String[] genFixedSizeUpperCaseArrUniq(int fixedSize, int minLen, int maxLen) {
+        return genFixedSizeStrArrUniq(fixedSize, minLen, maxLen, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    }
+
+    public static String[] genFixedSizeMixedCaseArrUniq(int fixedSize, int minLen, int maxLen) {
+        return genFixedSizeStrArrUniq(fixedSize, minLen, maxLen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    }
+
+    public static String[] genFixedSizeStrArr(int fixedSize, int minLen, int maxLen, String wordChars) {
         return doGenWords(fixedSize, minLen, maxLen, wordChars, false);
     }
 
-    public static String[] generateRandomUniqueWords(int fixedSize, int minLen, int maxLen, String wordChars) {
+    public static String[] genFixedSizeStrArrUniq(int fixedSize, int minLen, int maxLen, String wordChars) {
         return doGenWords(fixedSize, minLen, maxLen, wordChars, true);
 
     }
@@ -64,22 +88,22 @@ public class DataHelper {
         return generateOneWord(minLen, maxLen, wordChars, uniqChecker);
     }
 
-    public static int[] generateRandomUniqData(int maxSize, int min, int max) {
+    public static int[] genRandomSizeIntArrUniq(int maxSize, int min, int max) {
         if (max - min + 1 < maxSize) {
             throw new IllegalStateException("Cannot generate unique data more than " + (max - min + 1) + " with size " + maxSize);
         }
         return doGenerateRandomData(maxSize, min, max, new HashSet<Integer>());
     }
 
-    public static int[] generateRandomData(int maxSize, int min, int max) {
+    public static int[] genRandomSizeIntArr(int maxSize, int min, int max) {
         return doGenerateRandomData(maxSize, min, max, null);
     }
 
-    public static int[] generateFixedSizeData(int size, int min, int max) {
+    public static int[] genFixedSizeIntArr(int size, int min, int max) {
         return doGenerateFixedSizeData(size, min, max, null);
     }
 
-    public static int[] generateFixedSizeUniqData(int size, int min, int max) {
+    public static int[] genFixedSizeIntArrUniq(int size, int min, int max) {
         return doGenerateFixedSizeData(size, min, max, new HashSet<>(size));
     }
 
@@ -143,6 +167,36 @@ public class DataHelper {
 
     public static boolean isDescending(int[] data) {
         return isSorted(data, false);
+    }
+
+    public static <T> String getArrStr(T[] data) {
+        if (data == null) {
+            return "null";
+        }
+        if (data.length == 0) {
+            return "[]";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < data.length - 1; i++) {
+            sb.append(data[i]).append(", ");
+        }
+        sb.append(data[data.length - 1]).append("]");
+        return sb.toString();
+    }
+
+    public static <T> String getMatrixStr(T[][] data) {
+        if (data == null) {
+            return "null";
+        }
+        if (data.length == 0) {
+            return "[[]]";
+        }
+        StringBuilder sb = new StringBuilder("[\n");
+        for (int i = 0; i < data.length; i++) {
+            sb.append("  ").append(getArrStr(data[i])).append("\n");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     public static void printArray(int[] data) {

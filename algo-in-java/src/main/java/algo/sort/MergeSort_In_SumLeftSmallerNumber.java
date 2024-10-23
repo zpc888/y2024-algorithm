@@ -87,7 +87,7 @@ public class MergeSort_In_SumLeftSmallerNumber {
         System.out.println("----- stress test -----");
         final int testCycles = 100_000;
         for (int i = 0; i < testCycles; i++) {
-            int[] a = DataHelper.generateRandomData(1_000, -1_000, 10_000);
+            int[] a = DataHelper.genRandomSizeIntArr(1_000, -1_000, 10_000);
             int s = solution.solution(a);
             int b = solution.bruteForce(a);
             if (s != b) {
@@ -97,7 +97,7 @@ public class MergeSort_In_SumLeftSmallerNumber {
         System.out.println("----- performance test -----");
         int[][] arrOfArr = new int[testCycles][];
         for (int i = 0; i < testCycles; i++) {
-            arrOfArr[i] = DataHelper.generateRandomData(1_000, -1_000, 10_000);
+            arrOfArr[i] = DataHelper.genRandomSizeIntArr(1_000, -1_000, 10_000);
         }
         long start = System.nanoTime();
         for (int i = 0; i < testCycles; i++) {

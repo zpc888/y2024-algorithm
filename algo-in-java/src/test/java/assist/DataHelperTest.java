@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class DataHelperTest {
 
     @Test
-    void generateRandomData() {
+    void genRandomSizeIntArr() {
         for (int i = 0; i < 1000; i++) {
-            int[] data = DataHelper.generateRandomData(10, 1, 5);
+            int[] data = DataHelper.genRandomSizeIntArr(10, 1, 5);
             assertTrue(data.length <= 10);
             for (int d : data) {
                 assertTrue(d >= 1 && d <= 5);
@@ -58,8 +58,8 @@ class DataHelperTest {
     }
 
     @Test
-    void generateRandomWords() {
-        String[] words = DataHelper.generateRandomWords(10, 0, 8, "abcdefghijklmnopqrstuvwxyz");
+    void genFixedSizeStrArr() {
+        String[] words = DataHelper.genFixedSizeStrArr(10, 0, 8, "abcdefghijklmnopqrstuvwxyz");
         assertEquals(10, words.length);
         boolean isDirty = false;
         for (String word : words) {
@@ -75,8 +75,8 @@ class DataHelperTest {
     }
 
     @Test
-    void generateRandomUniqueWords() {
-        String[] words = DataHelper.generateRandomUniqueWords(10, 1, 10, "abcdefghijklmnopqrstuvwxyz");
+    void genFixedSizeStrArrUniq() {
+        String[] words = DataHelper.genFixedSizeStrArrUniq(10, 1, 10, "abcdefghijklmnopqrstuvwxyz");
         assertEquals(10, words.length);
         boolean isDirty = false;
         for (String word : words) {
@@ -93,7 +93,7 @@ class DataHelperTest {
 
     @Test
     void generateFixedLenWords() {
-        String[] words = DataHelper.generateRandomUniqueWords(1_000_000, 10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+        String[] words = DataHelper.genFixedSizeStrArrUniq(1_000_000, 10, 10, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
         assertEquals(1_000_000, words.length);
         boolean isDirty = false;
         for (String word : words) {

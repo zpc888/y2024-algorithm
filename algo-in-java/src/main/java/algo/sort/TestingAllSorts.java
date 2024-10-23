@@ -39,7 +39,7 @@ public class TestingAllSorts {
         int[][] copies = new int[sorts.length][];
         boolean succeed = true;
         outer: for (int i = 0; i < numberOfTestCycles; i++) {
-            int[] data = DataHelper.generateRandomData(maxSize, min, max);
+            int[] data = DataHelper.genRandomSizeIntArr(maxSize, min, max);
             for (int j = 0; j < copies.length; j++) {
                 copies[j] = DataHelper.copyArray(data);
                 sorts[j].sort(copies[j]);
@@ -72,7 +72,7 @@ public class TestingAllSorts {
         int[][] dataList = new int[numberOfTestCycles][];
         int size = 0;
         for (int i = 0; i < numberOfTestCycles; i++) {
-            dataList[i] = DataHelper.generateRandomData(maxSize, min, max);
+            dataList[i] = DataHelper.genRandomSizeIntArr(maxSize, min, max);
             size += dataList[i].length;
         }
         System.out.printf("Average array size: %s with max size can be: %s by running %s cycles%n"

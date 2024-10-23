@@ -114,7 +114,7 @@ public class Q_ReverseLink {
         Q_ReverseLink reverseLink = new Q_ReverseLink();
         int testTimes = 1000000;
         for (int i = 0; i < testTimes; i++) {
-            int[] arr = DataHelper.generateRandomData(100, -1000, 1000);
+            int[] arr = DataHelper.genRandomSizeIntArr(100, -1000, 1000);
             if (arr.length == 0) {
                 continue;
             }
@@ -169,7 +169,7 @@ public class Q_ReverseLink {
         Q_ReverseLink reverseLink = new Q_ReverseLink();
         int testTimes = 1000000;
         for (int i = 0; i < testTimes; i++) {
-            int[] arr = DataHelper.generateRandomData(100, -1000, 1000);
+            int[] arr = DataHelper.genRandomSizeIntArr(100, -1000, 1000);
             if (arr.length == 0) {
                 continue;
             }

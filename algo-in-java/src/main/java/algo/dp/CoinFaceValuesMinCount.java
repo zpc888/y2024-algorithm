@@ -102,7 +102,7 @@ public class CoinFaceValuesMinCount {
 	private static void verifyWithHighVolumes() {
 		Random random = new Random();
 		for (int run = 0; run < 10_000; run++) {
-			int[] coins = DataHelper.generateRandomData(8, 1, 20);
+			int[] coins = DataHelper.genRandomSizeIntArr(8, 1, 20);
 			int goal = random.nextInt(50) + 2;
 			runAllVersions(coins, goal, -1);
 		}

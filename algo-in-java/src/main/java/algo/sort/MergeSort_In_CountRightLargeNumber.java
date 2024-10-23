@@ -74,7 +74,7 @@ public class MergeSort_In_CountRightLargeNumber {
         System.out.println("----- test with high volume samples -----");
         int testCycles = 100_000;
         for (int i = 0; i < testCycles; i++) {
-            int[] b = DataHelper.generateRandomData(1_000, -1_000, 10_000);
+            int[] b = DataHelper.genRandomSizeIntArr(1_000, -1_000, 10_000);
             if (m.count(b) != m.bruteForce(b)) {
                 System.out.println("test failed on data: " + Arrays.toString(b));
                 return;

@@ -37,7 +37,7 @@ class Q0084_LargestRectangleInHistogram_MonotoneStackTest {
         int[][] inputs = new int[cycles][];
         int avgSize = 0;
         for (int i = 0; i < cycles; i++) {
-            int[] tmp = DataHelper.generateRandomData(10_000, 0, 1_000);
+            int[] tmp = DataHelper.genRandomSizeIntArr(10_000, 0, 1_000);
             sol.runAllVersions("Random " + (i+1), () -> sol.largestRectangleArea(tmp), null);
             inputs[i] = tmp;
             avgSize += tmp.length;

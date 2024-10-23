@@ -50,12 +50,12 @@ class Q1504_CountSubmatricesWithAllOnes_MonotoneStackVSDPTest {
         int[][][] data = new int[cycles][][];
         for (int i = 0; i < cycles; i++) {
             // rows * cols matrix mat of ones and zeros
-            int[] dim = DataHelper.generateFixedSizeData(2, 1, 150);
+            int[] dim = DataHelper.genFixedSizeIntArr(2, 1, 150);
             int rows = dim[0];
             int cols = dim[1];
             int[][] tmp = new int[rows][];
             for (int j = 0; j < rows; j++) {
-                tmp[j] = DataHelper.generateFixedSizeData(cols, 0, 1);
+                tmp[j] = DataHelper.genFixedSizeIntArr(cols, 0, 1);
             }
             data[i] = tmp;
             sol.runAllVersions("Random run: " + (i+1), () -> sol.numSubmat(tmp), null);

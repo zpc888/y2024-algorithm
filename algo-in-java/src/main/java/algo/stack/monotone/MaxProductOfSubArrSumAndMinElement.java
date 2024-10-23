@@ -122,7 +122,7 @@ public class MaxProductOfSubArrSumAndMinElement extends BaseSolution<Integer> {
 		int cycles = 10_000;
 		int[][] inputs = new int[cycles][];
 		for (int i = 0; i < cycles; i++) {
-			int[] randomData = DataHelper.generateRandomData(20, 0, 100);
+			int[] randomData = DataHelper.genRandomSizeIntArr(20, 0, 100);
 			sol.runAllVersions("Random " + (i+1) + ": " + Arrays.toString(randomData),
 					() -> sol.maxProductOfSumAndMinElement(randomData), null);
 			inputs[i] = randomData;

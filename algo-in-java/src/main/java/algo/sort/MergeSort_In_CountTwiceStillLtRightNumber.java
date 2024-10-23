@@ -83,7 +83,7 @@ public class MergeSort_In_CountTwiceStillLtRightNumber {
         System.out.println("------- high volume test -------");
         int testCycles = 100000;
         for (int i = 0; i < testCycles; i++) {
-            int[] a = DataHelper.generateRandomData(1000, -1000, 1000000);
+            int[] a = DataHelper.genRandomSizeIntArr(1000, -1000, 1000000);
             int r1 = counter.bruteForce(a);
             int r2 = counter.solution(a);
             if (r1 != r2) {
@@ -96,7 +96,7 @@ public class MergeSort_In_CountTwiceStillLtRightNumber {
         System.out.println("------- performance test -------");
         int[][] data = new int[testCycles][];
         for (int i = 0; i < testCycles; i++) {
-            data[i] = DataHelper.generateRandomData(1000, -1000, 1000000);
+            data[i] = DataHelper.genRandomSizeIntArr(1000, -1000, 1000000);
         }
         Duration bf = TestHelper.test(data, counter::bruteForce);
         Duration sol = TestHelper.test(data, counter::solution);

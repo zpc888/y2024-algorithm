@@ -199,7 +199,7 @@ public class PrevNextSmallerElementAroundMe_Dup extends BaseSolution<int[][]> {
         final int[][] testData = new int[cycles][];
         long totalSize = 0;
         for (int i = 0; i < cycles; i++) {
-            final int[] tmp = DataHelper.generateRandomData(10, 0, 50);
+            final int[] tmp = DataHelper.genRandomSizeIntArr(10, 0, 50);
             totalSize += tmp.length;
             sol.runAllVersions("Random " + (i + 1) + ": " + Arrays.toString(tmp),
                     () -> sol.nearestSmallerElemIndexes(tmp),

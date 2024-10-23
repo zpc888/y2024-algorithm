@@ -154,7 +154,7 @@ public class Q0327_CountOfRangeSum {
         final int upper = 20;
         System.out.println("========== test in large scale ==========");
         for (int i = 0; i < testCycle; i++) {
-            inputData[i] = DataHelper.generateRandomData(maxLen, -100, 100);
+            inputData[i] = DataHelper.genRandomSizeIntArr(maxLen, -100, 100);
             int c1 = q.countRangeSum_in_bruteForce(inputData[i], lower, upper);
             int c2 = q.countRangeSum(inputData[i], lower, upper);
             if (c1 != c2) {

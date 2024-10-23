@@ -4,7 +4,6 @@ import assist.BaseSolution;
 import assist.DataHelper;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -132,7 +131,7 @@ public class PrevNextSmallerElementAroundMe_NoDup extends BaseSolution<int[][]> 
         final int[][] testData = new int[cycles][];
         long totalSize = 0;
         for (int i = 0; i < cycles; i++) {
-            final int[] tmp = DataHelper.generateRandomUniqData(10, 0, 10000);
+            final int[] tmp = DataHelper.genRandomSizeIntArrUniq(10, 0, 10000);
             totalSize += tmp.length;
             sol.runAllVersions("Random " + (i + 1) + ": " + Arrays.toString(tmp),
                     () -> sol.nearestSmallerElemIndexes(tmp),

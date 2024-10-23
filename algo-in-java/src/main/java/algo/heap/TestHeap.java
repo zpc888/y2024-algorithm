@@ -11,7 +11,7 @@ public class TestHeap {
         testPriorityQueue(data);
         int testCycles = 100_000;
         for (int i = 0; i < testCycles; i++) {
-            int[] data1 = DataHelper.generateRandomData(100, -100, 1000);
+            int[] data1 = DataHelper.genRandomSizeIntArr(100, -100, 1000);
             if (data1.length == 0) {
                 i--;
                 continue;

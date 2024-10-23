@@ -93,7 +93,7 @@ public class MaxNumEveryN extends BaseSolution<int[]> {
         final int[] nData = new int[runCycles];
         final Random random = new Random();
         for (int i = 0; i < runCycles; i++) {
-            testData[i] = DataHelper.generateRandomData(10000, -100, 10000);
+            testData[i] = DataHelper.genRandomSizeIntArr(10000, -100, 10000);
             nData[i] = random.nextInt(100);
         }
         sol.performMeasure("Run " + runCycles + " cycles with random data", () -> {
@@ -112,7 +112,7 @@ public class MaxNumEveryN extends BaseSolution<int[]> {
 //		sol.silent = true;
         Random random = new Random();
         for (int run = 0; run < 100; run++) {
-            int[] arr = DataHelper.generateRandomData(random.nextInt(100), -100, 100);
+            int[] arr = DataHelper.genRandomSizeIntArr(random.nextInt(100), -100, 100);
             int n = random.nextInt(12);
             sol.runAllVersions("Random #" + (run+1) + ": n=" + n + ", arr=" + Arrays.toString(arr),
                     () -> sol.solution(arr, n), null);

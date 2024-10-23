@@ -10,7 +10,7 @@ public class Sorted_Vs_Unsorted_In_StreamFilter {
     private static final List<Integer> sorted = new ArrayList<>(20);
 
     public static void main(String[] args) {
-        int[] ints = DataHelper.generateRandomData(8, 0, 20);
+        int[] ints = DataHelper.genRandomSizeIntArr(8, 0, 20);
         for (int i : ints) {
             unsorted.add(i);
             sorted.add(i);
