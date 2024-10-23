@@ -75,10 +75,18 @@ public class DataHelper {
         return doGenerateRandomData(maxSize, min, max, null);
     }
 
-    private static int[] doGenerateRandomData(int maxSize, int min, int max, HashSet<Integer> uniqChecker) {
-        int size = (int) (Math.random() * (maxSize + 1));
+    public static int[] generateFixedSizeData(int size, int min, int max) {
+        return doGenerateFixedSizeData(size, min, max, null);
+    }
+
+    public static int[] generateFixedSizeUniqData(int size, int min, int max) {
+        return doGenerateFixedSizeData(size, min, max, new HashSet<>(size));
+    }
+
+    private static int[] doGenerateFixedSizeData(int size, int min, int max, HashSet<Integer> uniqChecker) {
         if (uniqChecker != null && max - min + 1 < size) {
-            return doGenerateRandomData(maxSize, min, max, uniqChecker);        // re-gen since caller already checks it has solution for maxSize
+            throw new IllegalStateException("Cannot generate unique random data more than "
+                    + (max - min + 1) + " with size " + size);
         }
         int[] data = new int[size];
         for (int i = 0; i < size; i++) {
@@ -92,6 +100,14 @@ public class DataHelper {
             data[i] = tmp;
         }
         return data;
+    }
+
+    private static int[] doGenerateRandomData(int maxSize, int min, int max, HashSet<Integer> uniqChecker) {
+        int size = (int) (Math.random() * (maxSize + 1));
+        if (uniqChecker != null && max - min + 1 < size) {
+            return doGenerateRandomData(maxSize, min, max, uniqChecker);        // re-gen since caller already checks it has solution for maxSize
+        }
+        return doGenerateFixedSizeData(size, min, max, uniqChecker);
     }
 
     public static boolean isArrayEqual(int[] data1, int[] data2) {
