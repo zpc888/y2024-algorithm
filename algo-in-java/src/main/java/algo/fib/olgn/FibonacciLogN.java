@@ -104,31 +104,39 @@ public class FibonacciLogN extends BaseSolution<Integer> {
 		FibonacciLogN sol = new FibonacciLogN();
 		sol.runAllVersions("f(5) = 5", () -> sol.fib(5), 5);
 		sol.runAllVersions("f(6) = 6", () -> sol.fib(6), 8);
-		int[] testData = DataHelper.genFixedSizeIntArrUniq(20, 1, 50);
+		int[] testData = DataHelper.genFixedSizeIntArrUniq(20, 1, 40);
 		for (int i = 0; i < testData.length; i++) {
 			final int n = testData[i];
 			sol.runAllVersions("#" + (i + 1) + " = " + n,
 					() -> sol.fib(n), null);
 		}
-		sol.performMeasure("Performance Report", () -> {
+		sol.performMeasure("20 Tests with Random: (1-40)", () -> {
 			for (int i = 0; i < testData.length; i++) {
 				sol.fib(testData[i]);
 			}
 			return null;
 		});
-//================================ performance Report ==========================
-//		Version-1: Duration: PT3.593945135S
-//		Version-2: Duration: PT0.000038122S
-//		Version-3: Duration: PT0.000025919S
-//		Version-4: Duration: PT0.000102674S
+//====================== < 20 Tests with Random: (1-40) > Performance Report ==============
+//		Version-1: Duration: PT0.452923894S
+//		Version-2: Duration: PT0.000035787S
+//		Version-3: Duration: PT0.000029085S
+//		Version-4: Duration: PT0.000176463S  // linear algebra version is 6 times slower than DP when 20 * n = 1 - 40
 
-		sol.performMeasure("Large N Performance Measure", () -> {
+		sol.performMeasure("Large 5,000 Performance Measure", () -> {
 			return sol.fib(5_000);
 		}, 1);
-//================================ performance Report ==========================
-//		Version-2: Duration: PT0.000112295S
-//		Version-3: Duration: PT0.000110272S
-//		Version-4: Duration: PT0.000037679S		  matrix-way is 3 times faster than DP, V1 will time out
+//====================== < Large 5,000 Performance Measure > Performance Report ==============
+//		Version-2: Duration: PT0.000119165S
+//		Version-3: Duration: PT0.000140646S
+//		Version-4: Duration: PT0.000031079S		// linear algebra version is 4 times faster than DP when n = 5,000
+
+		sol.performMeasure("Large 100,000 Performance Measure", () -> {
+			return sol.fib(100_000);
+		}, 1);
+//====================== < Large 100,000 Performance Measure > Performance Report ==============
+//		Version-2: Duration: PT0.001451254S
+//		Version-3: Duration: PT0.000855527S
+//		Version-4: Duration: PT0.000027883S		// linear algebra version is 50 times faster than DP when n = 100,000
 
 	}
 }
