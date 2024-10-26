@@ -47,7 +47,7 @@ public abstract class BaseSolution<R> {
             System.out.println();
             times.put(this.versionToRun, dur);
         }
-        System.out.println("================================ performance Report ==========================");
+        System.out.printf("====================== < %s > Performance Report ==============%n", title);
         for (Integer version : times.keySet()) {
             Duration dur = times.get(version);
             System.out.printf("\tVersion-%s: Duration: %s%n", version, dur);
