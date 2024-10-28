@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,7 @@ class Q0472_Concatenated_WordsTest {
         words1 = "cat,bat,rat,catrat,batcat,batcatrat,cats".split(",");
         words2 = "cat,bat,catbat".split(",");
         words3 = new String[]{"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
+        // 42 / 43 testcases passed. Time Limit Exceeded on #43 test case, i.e. below words
         words4 = new String[]{"a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa",
                 "aaaaaaaaa", "aaaaaaaaaa", "aaaaaaaaaaa", "aaaaaaaaaaaa", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaa",
                 "aaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaa",
@@ -35,10 +37,10 @@ class Q0472_Concatenated_WordsTest {
 
     @Test
     void findAllConcatenatedWordsInADict() {
-        Q0472_Concatenated_Words q0472_concatenated_words = new Q0472_Concatenated_Words();
-        assertEquals(3, q0472_concatenated_words.findAllConcatenatedWordsInADict(words1).size());
-        assertEquals(1, q0472_concatenated_words.findAllConcatenatedWordsInADict(words2).size());
-        assertEquals(3, q0472_concatenated_words.findAllConcatenatedWordsInADict(words3).size());
+        Q0472_Concatenated_Words sol = new Q0472_Concatenated_Words();
+        sol.runAllVersions(Arrays.toString(words1) + " expect: 3", () -> sol.findAllConcatenatedWordsInADict(words1), null);
+        sol.runAllVersions(Arrays.toString(words2) + " expect: 1", () -> sol.findAllConcatenatedWordsInADict(words2), null);
+        sol.runAllVersions(Arrays.toString(words3) + " expect: 3", () -> sol.findAllConcatenatedWordsInADict(words3), null);
     }
 
     @Disabled
@@ -46,10 +48,11 @@ class Q0472_Concatenated_WordsTest {
     void testLargeInput() {
         Q0472_Concatenated_Words sol = new Q0472_Concatenated_Words();
         long start = System.currentTimeMillis();
-        List<String> results = sol.findAllConcatenatedWordsInADict(words4);
-        System.out.println("Time: " + (System.currentTimeMillis() - start) + "ms");     // timeout version takes about 304 seconds
-        System.out.println("results.size() = " + results.size());
-        System.out.println("results = " + results);
-        assertEquals(725, results.size());
+
+        sol.performMeasure("test leetcode #43 time exceeded limit  case", () -> {
+            List<String> results = sol.findAllConcatenatedWordsInADict(words4);
+            assertEquals(725, results.size());
+            return null;
+        }, 1);
     }
 }
