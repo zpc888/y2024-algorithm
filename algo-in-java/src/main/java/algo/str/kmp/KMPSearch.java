@@ -1,4 +1,4 @@
-package algo.kmp;
+package algo.str.kmp;
 
 import assist.BaseSolution;
 import assist.DataHelper;

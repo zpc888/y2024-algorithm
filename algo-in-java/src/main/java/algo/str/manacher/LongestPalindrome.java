@@ -1,4 +1,4 @@
-package algo.manacher;
+package algo.str.manacher;
 
 import assist.BaseSolution;
 import assist.DataHelper;
