@@ -9,6 +9,12 @@ public class TreeNode {
         val = x;
     }
 
+    public TreeNode(int x, TreeNode left, TreeNode right) {
+        val = x;
+        this.left = left;
+        this.right = right;
+    }
+
     public static boolean hasSameValue(TreeNode a, TreeNode b) {
         if (a == b) {       // including a == null && b == null
             return true;
