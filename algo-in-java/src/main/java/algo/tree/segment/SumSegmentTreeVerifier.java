@@ -5,8 +5,6 @@ import assist.DataHelper;
 
 import java.util.Arrays;
 
-import static algo.tree.segment.SumSegmentTree.refineTo1Base;
-
 public class SumSegmentTreeVerifier extends BaseSolution<Integer> implements ISumSegmentTree {
     private final ISumSegmentTree[] sumSegmentTrees;
 
@@ -39,7 +37,7 @@ public class SumSegmentTreeVerifier extends BaseSolution<Integer> implements ISu
 
         public VerifierBruteForce(int[] arr) {
             this.origin = arr;
-            refined = refineTo1Base(arr);
+            refined = ISegmentTree.refineTo1Base(arr);
         }
 
         @Override

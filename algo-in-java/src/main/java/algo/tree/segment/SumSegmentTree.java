@@ -19,21 +19,14 @@ public class SumSegmentTree implements ISumSegmentTree {
 		// if origin len is even = 2 * N + 1
 		// if odd = 2 * N
 		this.originLen = arr.length;
-		refined = refineTo1Base(arr);
+		refined = ISegmentTree.refineTo1Base(arr);
 		int len = arr.length * 4;
 		sum = new int[len];
 		buildSum(1, originLen, 1);
 		lazyAddPropagations = new int[len];
 	}
 
-	static int[] refineTo1Base(int[] arr) {
-		int len = arr.length;
-		int[] ret = new int[len + 1];
-		for (int i = 0; i < len; i++) {
-			ret[i + 1] = arr[i];
-		}
-		return ret;
-	}
+
 
 	/**
 	 * sum the origin array from l-1 to r-1 (or refined l to r inclusive)
