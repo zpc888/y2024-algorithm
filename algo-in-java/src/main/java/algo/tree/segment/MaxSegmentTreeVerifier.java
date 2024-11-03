@@ -162,7 +162,7 @@ public class MaxSegmentTreeVerifier extends BaseSolution<Integer> implements IMa
             }
         }
 
-        int[] pfArr = DataHelper.genFixedSizeIntArrUniq(ARRAY_MAX_SIZE, ARRAY_MIN_VAL, ARRAY_MAX_VAL);
+        int[] pfArr = DataHelper.genFixedSizeIntArr(ARRAY_MAX_SIZE * 100, ARRAY_MIN_VAL, ARRAY_MAX_VAL);
         int pfAddQueryCount = 5_000;
         int[][] pfAddLRs = new int[pfAddQueryCount][];
         int[] pfAddVals = DataHelper.genFixedSizeIntArr(pfAddQueryCount, ARRAY_MIN_VAL, ARRAY_MAX_VAL);
@@ -185,7 +185,11 @@ public class MaxSegmentTreeVerifier extends BaseSolution<Integer> implements IMa
                 });
 //        ====================== < 5000 add-actions and 5000 queries > Performance Report ==============
 //        Version-1: Duration: PT0.002699519S
-//        Version-2: Duration: PT0.003743989S  // SegmentTree does outperform brute-force for max 1_000 elements
+//        Version-2: Duration: PT0.003743989S  // SegmentTree does outperform brute-force for 1_000 elements
+
+//====================== < 5000 add-actions and 5000 queries > Performance Report ==============
+//        Version-1: Duration: PT0.219777148S
+//        Version-2: Duration: PT0.007491134S  // SegmentTree outperforms 30 times brute-force for 100_000 elements
     }
 
     public static class VerifierBruteForce implements IMaxSegmentTree {
