@@ -53,6 +53,21 @@ public class D2BITVerifier extends BaseSolution<Integer> implements D2BIT {
         sol.runAllVersions("No add (4, 4, 5, 5)", () -> sol.sum(4, 4, 5, 5), 13);
         sol.runAllVersions("No add (2, 2, 4, 4)", () -> sol.sum(2, 2, 4, 4), 16);
 
+        sol.runAllVersions("add (1,1,2) then (2, 2, 4, 4)", () -> {
+            sol.add(1, 1, 2);
+            return sol.sum(2, 2, 4, 4);
+        }, 16);
+
+        sol.runAllVersions("add (2,3,3) then (2, 2, 4, 4)", () -> {
+            sol.add(2, 3, 3);
+            return sol.sum(2, 2, 4, 4);
+        }, 19);
+
+        sol.runAllVersions("add (4,4,4) then (2, 2, 4, 4)", () -> {
+            sol.add(4, 4, 4);
+            return sol.sum(2, 2, 4, 4);
+        }, 23);
+
         highVolumeTest();
     }
 
