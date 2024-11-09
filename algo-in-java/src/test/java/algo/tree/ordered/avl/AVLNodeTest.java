@@ -92,6 +92,72 @@ class AVLNodeTest {
         delete15Trigger2RotationAtDiffPositionsFinalAVL = f60;
     }
 
+    private int getFloorKey(int key) {
+        int key1 = delete15Trigger2RotationAtDiffPositionsInitAVL.getFloorKey(key);
+        int key2 = delete15Trigger2RotationAtDiffPositionsFinalAVL.getFloorKey(key);
+        assertEquals(key2, key1);
+        return key1;
+    }
+
+    private int getAboveFloorKey(int key) {
+        int key1 = delete15Trigger2RotationAtDiffPositionsInitAVL.getAboveFloorKey(key);
+        int key2 = delete15Trigger2RotationAtDiffPositionsFinalAVL.getAboveFloorKey(key);
+        assertEquals(key2, key1);
+        return key1;
+    }
+
+    private int getCeilingKey(int key) {
+        int key1 = delete15Trigger2RotationAtDiffPositionsInitAVL.getCeilingKey(key);
+        int key2 = delete15Trigger2RotationAtDiffPositionsFinalAVL.getCeilingKey(key);
+        assertEquals(key2, key1);
+        return key1;
+    }
+
+    private int getBelowCeilingKey(int key) {
+        int key1 = delete15Trigger2RotationAtDiffPositionsInitAVL.getBelowCeilingKey(key);
+        int key2 = delete15Trigger2RotationAtDiffPositionsFinalAVL.getBelowCeilingKey(key);
+        assertEquals(key2, key1);
+        return key1;
+    }
+
+    @Test
+    void testQueryFloor() {
+        assertEquals(35, getFloorKey(35));
+        assertEquals(40, getFloorKey(36));
+        assertEquals(60, getFloorKey(58));
+        assertEquals(65, getFloorKey(63));
+        assertEquals(60, getFloorKey(60));
+    }
+
+
+    @Test
+    void testQueryFloorAbove() {
+        assertEquals(40, getAboveFloorKey(35));
+        assertEquals(40, getAboveFloorKey(36));
+        assertEquals(60, getAboveFloorKey(58));
+        assertEquals(65, getAboveFloorKey(63));
+        assertEquals(62, getAboveFloorKey(60));
+    }
+
+    @Test
+    void testQueryCeilingBelow() {
+        assertEquals(25, getBelowCeilingKey(35));
+        assertEquals(35, getBelowCeilingKey(36));
+        assertEquals(55, getBelowCeilingKey(58));
+        assertEquals(62, getBelowCeilingKey(63));
+        assertEquals(55, getBelowCeilingKey(60));
+    }
+
+    @Test
+    void testQueryCeiling() {
+        assertEquals(35, getCeilingKey(35));
+        assertEquals(35, getCeilingKey(36));
+        assertEquals(55, getCeilingKey(58));
+        assertEquals(62, getCeilingKey(63));
+        assertEquals(60, getCeilingKey(60));
+    }
+
+
     @Test
     void testInitialAVL() {
         assertTrue(delete15Trigger2RotationAtDiffPositionsInitAVL.isValid());

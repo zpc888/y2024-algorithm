@@ -1,5 +1,7 @@
 package algo.tree.ordered;
 
+import java.util.Optional;
+
 /**
  * Node for Binary Search Tree, which is a binary tree with the following properties:
  * 1. The left subtree of a node contains only nodes with keys less than the node's key.
@@ -49,6 +51,100 @@ public class BSTNode<K extends Comparable<K>, V> {
 
     public V getValue() {
         return value;
+    }
+
+    public K getFloorKey(K key) {
+        return doGetFloorKey(key, true);
+    }
+
+    private K doGetFloorKey(K key, boolean returnIfEq) {
+        K floor = null;
+        BSTNode<K, V> curr = this;
+        while (curr != null) {
+            int comp = key.compareTo(curr.getKey());
+            if (comp < 0) {
+                floor = curr.getKey();
+                curr = curr.left;
+            } else if (comp > 0) {
+                curr = curr.right;
+            } else {    // equals
+                if (returnIfEq) {
+                    floor = key;
+                    break;
+                } else {
+                    curr = curr.right;
+                }
+            }
+        }
+        return floor;
+    }
+
+    private K doGetCeilingKey(K key, boolean returnIfEq) {
+        K ceiling = null;
+        BSTNode<K, V> curr = this;
+        while (curr != null) {
+            int comp = key.compareTo(curr.getKey());
+            if (comp > 0) {
+                ceiling = curr.getKey();
+                curr = curr.right;
+            } else if (comp < 0) {
+                curr = curr.left;
+            } else {    // equals
+                if (returnIfEq) {
+                    ceiling = key;
+                    break;
+                } else {
+                    curr = curr.left;
+                }
+            }
+        }
+        return ceiling;
+    }
+
+    public K getCeilingKey(K key) {
+        return doGetCeilingKey(key, true);
+    }
+
+    public K getAboveFloorKey(K key) {
+        return doGetFloorKey(key, false);
+    }
+
+    public K getBelowCeilingKey(K key) {
+        return doGetCeilingKey(key, false);
+    }
+
+    public boolean containsKey(K key) {
+        int comp = key.compareTo(getKey());
+        if (comp < 0) {
+            if (left != null) {
+                return left.containsKey(key);
+            }
+            return false;
+        } else if (comp > 0) {
+            if (right != null) {
+                return right.containsKey(key);
+            }
+            return false;
+        } else {    // equals
+            return true;
+        }
+    }
+
+    public V getValueByKey(K key) {
+        int comp = key.compareTo(getKey());
+        if (comp < 0) {
+            if (left != null) {
+                return left.getValueByKey(key);
+            }
+            return null;
+        } else if (comp > 0) {
+            if (right != null) {
+                return right.getValueByKey(key);
+            }
+            return null;
+        } else {    // equals
+            return value;
+        }
     }
 
     public BSTNode<K, V> remove(K key) {
