@@ -53,31 +53,14 @@ public class AVLNode<K extends Comparable<K>, V> extends BSTNode<K, V> {
         return actualHeight;
 	}
 
-    private AVLNode<K, V> doAdd(K key, V value) {
-        int comp = key.compareTo(getKey());
-        if (comp < 0) {
-            if (getLeft() == null) {
-                setLeft(new AVLNode<>(key, value));
-            } else {
-                setLeft(getLeft().add(key, value));
-            }
-            return this;
-        } else if (comp > 0) {
-            if (getRight() == null) {
-                setRight(new AVLNode<>(key, value));
-            } else {
-                setRight(getRight().add(key, value));
-            }
-            return this;
-        } else {	// equals
-            throw new IllegalStateException("Duplicate key is not supported. " +
-                    "Key = " + key);
-        }
+    @Override
+    protected AVLNode<K, V> newNode(K key, V value) {
+        return new AVLNode<>(key, value);
     }
 
     @Override
     public AVLNode<K, V> add(K key, V value) {
-        AVLNode<K, V> newRoot = (AVLNode<K, V>) doAdd(key, value);
+        AVLNode<K, V> newRoot = (AVLNode<K, V>) super.add(key, value);
         AVLNode<K, V> left = (AVLNode<K, V>) newRoot.getLeft();
         AVLNode<K, V> right = (AVLNode<K, V>) newRoot.getRight();
         int leftHeight = left == null ? 0 : left.getHeight();

@@ -189,18 +189,22 @@ public class BSTNode<K extends Comparable<K>, V> {
         }
     }
 
+    protected BSTNode<K, V> newNode(K key, V value) {
+        return new BSTNode<>(key, value);
+    }
+
     public BSTNode<K, V> add(K key, V value) {
 		int comp = key.compareTo(getKey());
 		if (comp < 0) {
 			if (left == null) {
-				left = new BSTNode<>(key, value);
+				left = newNode(key, value);
 			} else {
 				left = left.add(key, value);
 			}
 			return this;
 		} else if (comp > 0) {
 			if (right == null) {
-				right = new BSTNode<>(key, value);
+				right = newNode(key, value);
 			} else {
 				right = right.add(key, value);
 			}
