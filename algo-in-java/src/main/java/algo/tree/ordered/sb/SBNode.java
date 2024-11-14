@@ -135,9 +135,9 @@ public class SBNode<K extends Comparable<K>, V> extends BSTNode<K, V> {
                 }
                 if (parent != null) {
                     // right has left child
+                    parent.setLeft(null);     // break the line
                     parent.setLeft(min.getRight());
                     min.setRight(null);       // left is already null
-                    parent.setLeft(null);     // break the line
                     parent.fixSizeShadowlyIfNeeded();   // no need to re-balance since it won't break the balance
                     min.setLeft(getLeft());
                     min.setRight(getRight());
