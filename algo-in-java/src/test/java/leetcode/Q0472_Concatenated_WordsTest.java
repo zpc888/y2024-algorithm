@@ -59,8 +59,9 @@ class Q0472_Concatenated_WordsTest {
             List<String> results = sol.findAllConcatenatedWordsInADict(words4);
             assertEquals(725, results.size());
             return null;
-        }, 1, 2, 4);
+        }, 2, 4);
 //        ====================== < test leetcode #43 time exceeded limit  case > Performance Report ==============
+//        Version-1: Duration: PT0.012180776S       // add DP cache, it can run the large input now
 //        Version-3: Duration: PT0.004637966S       // check the least frequency characters, but fails on even-distributed characters with large input
 //        Version-5: Duration: PT0.001677948S       // DP   N^2
 //        Version-6: Duration: PT0.001185648S       // DP enhanced to avoid remove the word from the set first, then add it back

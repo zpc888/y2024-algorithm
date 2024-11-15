@@ -45,7 +45,7 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
 		if (versionToRun == 1) {
-			return processV1_Timeout(words);
+			return processV1_Timeout_Fixed_With_DP_Cache(words);
 		} else if (versionToRun == 2) {
 			return processV2(words);
 		} else if (versionToRun == 3) {
@@ -267,7 +267,9 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 		return false;
 	}
 
-	public List<String> processV1_Timeout(String[] words) {
+	@MetricsRuntime(ms = 368, beats = 5.10)
+	@MetricsMemory(mb = 46.56, beats = 99.75)
+	public List<String> processV1_Timeout_Fixed_With_DP_Cache(String[] words) {
 		Comparator<String> sortingWordByLenDesc = (s1, s2) -> s2.length() - s1.length();
 //		Set<String> set = new HashSet<>();
 //		for (String w: words) {
@@ -292,7 +294,7 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 		}
 		List<String> ret = new ArrayList<>(16);
 		for (String w: words) {
-			if (isConcatenatedWords_V1_Timeout(w, byFirstLetters)) {
+			if (isConcatenatedWords_V1_Timeout_Fixed_With_DP_Cache(w, byFirstLetters)) {
 				ret.add(w);
 			}
 		}
@@ -300,20 +302,21 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
     }
 
 	// time out
-	private boolean isConcatenatedWords_V1_Timeout(String word, List[] byFirstLetters) {
+	private boolean isConcatenatedWords_V1_Timeout_Fixed_With_DP_Cache(String word, List[] byFirstLetters) {
 		int idx = (int)(word.charAt(0) - 'a');
 		List<String> startings = (List<String>) byFirstLetters[idx];
 		// descending order
 		if (startings.isEmpty() || startings.get(startings.size() - 1).length() >= word.length()) {
 			return false;
 		}
+		Set<String> failedRests = new HashSet<>();		// ok will exit, no need to cache
 		for (int i = 0; i < startings.size(); i++) {
 			String start = startings.get(i);
 			if (start.length() >= word.length()) {
 				continue;
 			}
 			if (word.startsWith(start)) {
-				if (containsAtLeastOne_V1_Timeout(word.substring(start.length()), byFirstLetters)) {
+				if (containsAtLeastOne_V1_Timeout_Fixed_With_DP_Cache(word.substring(start.length()), byFirstLetters, failedRests)) {
 					return true;
 				}
 			}
@@ -321,7 +324,10 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 		return false;
 	}
 
-	private boolean containsAtLeastOne_V1_Timeout(String rest, List[] byFirstLetters) {
+	private boolean containsAtLeastOne_V1_Timeout_Fixed_With_DP_Cache(String rest, List[] byFirstLetters, Set<String> failedCaches) {
+		if (failedCaches.contains(rest)) {
+			return false;
+		}
 		int restLen = rest.length();
 		if (restLen == 0) {
 			return true;
@@ -335,11 +341,12 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 				continue;
 			}
 			if (rest.charAt(startLen - 1) == start.charAt(startLen -1 ) && rest.startsWith(start)) {
-				if (containsAtLeastOne_V1_Timeout(rest.substring(startLen), byFirstLetters)) {
+				if (containsAtLeastOne_V1_Timeout_Fixed_With_DP_Cache(rest.substring(startLen), byFirstLetters, failedCaches)) {
 					return true;
 				}
 			}
 		}
+		failedCaches.add(rest);
 		return false;
 	}
 
