@@ -1,6 +1,8 @@
 package leetcode;
 
 import assist.BaseSolution;
+import run.MetricsMemory;
+import run.MetricsRuntime;
 
 import java.util.*;
 
@@ -38,7 +40,7 @@ import java.util.*;
 public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 	@Override
 	protected int getNumberOfVersionsImplemented() {
-		return 2;
+		return 6;
 	}
 
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
@@ -46,10 +48,175 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 			return processV1_Timeout(words);
 		} else if (versionToRun == 2) {
 			return processV2(words);
+		} else if (versionToRun == 3) {
+			return processV3_preProcess(words);
+		} else if (versionToRun == 4) {
+			return processV4(words);
+		} else if (versionToRun == 5) {
+			return processV5_DP(words);
+		} else if (versionToRun == 6) {
+			return processV6_DP(words);
 		} else {
 			throw new RuntimeException("No such version: " + versionToRun);
 		}
 	}
+
+	public List<String> processV3_preProcess(String[] words) {
+		WordInfo[] wordInfos = new WordInfo[words.length];
+		Map<Character, List<WordInfo>> charToWords = new HashMap<>(26);
+		for (int i = 0; i < words.length; i++) {
+			wordInfos[i] = new WordInfo(words[i]);
+			for (CharInfo ci: wordInfos[i].charInfos) {
+				List<WordInfo> list = charToWords.get(ci.c);
+				if (list == null) {
+					list = new ArrayList<>(16);
+					charToWords.put(ci.c, list);
+				}
+				list.add(wordInfos[i]);
+			}
+		}
+		List<String> ret = new ArrayList<>(16);
+//		int cnt = 0;
+		for (int i = 0; i < words.length; i++) {
+			if (isConcatenated_V3(wordInfos[i], charToWords)) {
+				System.out.print(".");
+//				cnt++;
+				ret.add(words[i]);
+//				if (cnt % 50 == 0) {
+//					System.out.println();
+//				}
+			}
+		}
+//		System.out.println();
+//		System.out.println("FOUND: " + cnt + " words are concatenated.");
+		return ret;
+	}
+
+	private boolean isConcatenated_V3(WordInfo wordInfo, Map<Character, List<WordInfo>> charToWords) {
+		int len = wordInfo.len;
+		if (len == 0) {
+			return false;
+		}
+		return doV3(wordInfo, charToWords, 0, len - 1);
+	}
+
+	private boolean doV3(WordInfo wordInfo, Map<Character, List<WordInfo>> charToWords, int from, int to) {
+		if (from > to) {
+			return true;
+		}
+		for (CharInfo ci: wordInfo.charInfos) {
+			int[] indexes = ci.indexes;
+			for (int i = 0; i < indexes.length; i++) {
+				int idx = indexes[i];
+				if (idx < from || idx > to) {
+					continue;
+				}
+				List<WordInfo> parts = charToWords.get(ci.c);
+				for (WordInfo part: parts) {
+					if (part == wordInfo || part.len > to - from + 1) {
+						continue;
+					}
+					// possible candidate to be concatenated to form the word
+					int candidateCheckSum = part.getCheckSum();
+					int[] candidateIndexes = part.getIndexOfChar(ci.c);
+					if (candidateIndexes.length == 0) {
+						continue;
+					}
+					for (int j = 0; j < candidateIndexes.length; j++) {
+						int candidateIdx = candidateIndexes[j];
+						int candidateFrom = idx - candidateIdx;
+						int candidateTo = idx + part.len - candidateIdx - 1;
+						if (candidateFrom < from || candidateTo > to
+								|| candidateCheckSum != wordInfo.getCheckSum(candidateFrom, candidateTo)) {
+							// not in the range or in-range, but check-sum doesn't match
+							continue;
+						}
+						if (!isMatched_V3(wordInfo, part, candidateFrom, candidateTo)) {
+							continue;
+						}
+						if (doV3(wordInfo, charToWords, candidateTo + 1, to)
+								&& doV3(wordInfo, charToWords, from, candidateFrom - 1)) {
+							return true;
+						}
+					}
+				}
+				return false;		// must match at least one part
+			}
+		}
+		return false;
+	}
+
+	private boolean isMatched_V3(WordInfo wordInfo, WordInfo part, int candidateFrom, int candidateTo) {
+		for (int i = candidateFrom; i <= candidateTo; i++) {
+			if (wordInfo.chars[i] != part.chars[i - candidateFrom]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static class CharInfo {
+		final char c;
+		final int[] indexes;
+		CharInfo(char c, int[] idx) {
+			this.c = c;
+			this.indexes = idx;
+		}
+	}
+
+	private static class WordInfo {
+		final String word;
+		final char[] chars;
+		final int len;
+		final int[] preSums;
+		final List<CharInfo> charInfos;		// sorted by the number of indexes
+		WordInfo(String w) {
+			word = w;
+			len = w.length();
+			chars = w.toCharArray();
+			preSums = new int[len + 1];
+			List<Integer>[] indexes = new List[26];
+			int uniqCharCount = 0;
+			for (int i = 0; i < len; i++) {
+				char c = chars[i];
+				int idx = c - 'a';
+				preSums[i + 1] = preSums[i] + idx;
+				List<Integer> list = indexes[idx];
+				if (list == null) {
+					uniqCharCount++;
+					list = new ArrayList<>(16);
+					indexes[idx] = list;
+				}
+				list.add(i);
+			}
+			charInfos = new ArrayList<>(uniqCharCount);
+			for (int i = 0; i < 26; i++) {
+				List<Integer> list = indexes[i];
+				if (list != null) {
+					charInfos.add(new CharInfo((char)('a' + i), list.stream().mapToInt(Integer::intValue).toArray()));
+				}
+			}
+			charInfos.sort((c1, c2) -> c1.indexes.length - c2.indexes.length);
+		}
+
+		int[] getIndexOfChar(char c) {
+			for (CharInfo ci: charInfos) {
+				if (ci.c == c) {
+					return ci.indexes;
+				}
+			}
+			return new int[0];
+		}
+
+		int getCheckSum() {
+			return preSums[len];
+		}
+
+		int getCheckSum(int from, int to) {
+			return preSums[to + 1] - preSums[from];
+		}
+	}
+
 
 	public List<String> processV2(String[] words) {
 		Map<Character, Map<Integer, List<String>>> byFirstLetterThenLen = new HashMap<>();
@@ -169,6 +336,165 @@ public class Q0472_Concatenated_Words extends BaseSolution<List<String>> {
 			}
 			if (rest.charAt(startLen - 1) == start.charAt(startLen -1 ) && rest.startsWith(start)) {
 				if (containsAtLeastOne_V1_Timeout(rest.substring(startLen), byFirstLetters)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Generated by CoPilot
+	@MetricsRuntime(ms = 63, beats = 63.95)
+	@MetricsMemory(mb = 49.28, beats = 62.12)
+	public List<String> processV5_DP(String[] words) {
+		Set<String> set = new HashSet<>(Arrays.asList(words));
+		List<String> ret = new ArrayList<>(16);
+		for (String w: words) {
+			set.remove(w);
+			if (isConcatenatedWords_V5_DP(w, set)) {
+				ret.add(w);
+			}
+			set.add(w);
+		}
+		return ret;
+	}
+
+	private boolean isConcatenatedWords_V5_DP(String w, Set<String> set) {
+		int len = w.length();
+		if (len == 0) {
+			return false;
+		}
+		boolean[] dp = new boolean[len + 1];
+		dp[0] = true;
+		for (int i = 1; i <= len; i++) {
+			for (int j = 0; j < i; j++) {
+				if (dp[j] && set.contains(w.substring(j, i))) {
+					dp[i] = true;
+					break;
+				}
+			}
+		}
+		return dp[len];
+	}
+
+	@MetricsRuntime(ms = 55, beats = 77.21)
+	@MetricsMemory(mb = 48.99, beats = 70.58)
+	public List<String> processV6_DP(String[] words) {
+		Set<String> set = new HashSet<>(Arrays.asList(words));
+		List<String> ret = new ArrayList<>(16);
+		for (String w: words) {
+			if (isConcatenatedWords_V6_DP(w, set)) {
+				ret.add(w);
+			}
+		}
+		return ret;
+	}
+
+	private boolean isConcatenatedWords_V6_DP(String w, Set<String> set) {
+		int len = w.length();
+		if (len == 0) {
+			return false;
+		}
+		boolean[] dp = new boolean[len + 1];
+		dp[0] = true;
+		for (int i = 1; i <= len; i++) {
+			for (int j = 0; j < i; j++) {
+				if (i == len && j == 0) {
+					continue;
+				}
+				if (dp[j] && set.contains(w.substring(j, i))) {
+					dp[i] = true;
+					break;
+				}
+			}
+		}
+		return dp[len];
+	}
+
+	public List<String> processV4(String[] words) {
+		int len = words.length;
+		char[][] charArrays = new char[len][];
+		int[][] preSums = new int[len][];
+		List<Integer>[] byFirstLetterIndexes = new List[26];
+		for (int i = 0; i < len; i++) {
+			charArrays[i] = words[i].toCharArray();
+			preSums[i] = new int[charArrays[i].length + 1];
+			int idx = (int)(charArrays[i][0] - 'a');
+			if (byFirstLetterIndexes[idx] == null) {
+				byFirstLetterIndexes[idx] = new ArrayList<Integer>(16);
+			}
+			for (int j = 0; j < charArrays[i].length; j++) {
+				preSums[i][j + 1] = preSums[i][j] + (int)(charArrays[i][j] - 'a');
+			}
+			byFirstLetterIndexes[idx].add(i);
+		}
+		List<String> ret = new ArrayList<>(16);
+		for (int i = 0; i < len; i++) {
+			if (isConcatenatedWords_V4(i, charArrays, byFirstLetterIndexes, preSums)) {
+				ret.add(words[i]);
+			}
+		}
+		return ret;
+	}
+
+	private boolean isConcatenatedWords_V4(int idx, char[][] charArrays, List<Integer>[] byFirstLetterIndexes, int[][] preSums) {
+		char[] chars = charArrays[idx];
+		int len = chars.length;
+		if (len == 0) {
+			return false;
+		}
+		int[] preSum = preSums[idx];
+		return doV4(idx, chars, charArrays, byFirstLetterIndexes, preSums, 0, len - 1);
+	}
+
+	private boolean doV4(int idx, char[] chars, char[][] charArrays, List<Integer>[] byFirstLetterIndexes, int[][] preSums, int from, int to) {
+		if (from > to) {
+			return true;
+		}
+		int firstLetterIdx = (int)(chars[from] - 'a');
+		List<Integer> indexes = byFirstLetterIndexes[firstLetterIdx];
+		if (indexes == null || indexes.isEmpty()) {
+			return false;
+		}
+		int[] myPreSum = preSums[idx];
+		List<char[]> startsWith = new ArrayList<>(16);
+		for (int candidateIdx: indexes) {
+			if (candidateIdx == idx) {
+				continue;
+			}
+			char[] candidateChars = charArrays[candidateIdx];
+			int candidateLen = candidateChars.length;
+			if (candidateLen > to - from + 1) {
+				continue;
+			}
+			int candidatePreSum = preSums[candidateIdx][candidateLen];
+			int myCheckSum = myPreSum[from + candidateLen] - myPreSum[from];
+			if (myCheckSum != candidatePreSum) {
+				continue;
+			}
+			boolean matched = true;
+			for (int j = 0; j < candidateLen; j++) {
+				if (chars[from + j] != candidateChars[j]) {
+					matched = false;
+					break;
+				}
+			}
+			if (matched) {
+				startsWith.add(candidateChars);
+			}
+		}
+		if (startsWith.isEmpty()) {
+			return false;
+		} else if (startsWith.size() == 1) {
+			if (doV4(idx, chars, charArrays, byFirstLetterIndexes,
+					preSums, from + startsWith.iterator().next().length, to)) {
+				return true;
+			}
+		} else {
+			startsWith.sort((c1, c2) -> c2.length - c1.length);
+			for (char[] start: startsWith) {
+				if (doV4(idx, chars, charArrays, byFirstLetterIndexes,
+						preSums, from + start.length, to)) {
 					return true;
 				}
 			}
