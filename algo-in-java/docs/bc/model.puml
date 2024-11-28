@@ -1,0 +1,110 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Comparable<DateElem>
+interface DateElem {
+    boolean matches(LocalDate date)
+    int getWeight()
+}
+Comparable <|.. DateElem
+abstract class AbstractDateElem {
+    DateElemMatcher dateElemMatcher
+    DateElemCondition condition
+    boolean matches(LocalDate date)
+    {abstract} #boolean matchByMatcher((LocalDate date)
+}
+class DateElemCondition {
+    -boolean andRelationships = true
+    -List<DateElem> conditionalElems
+    {static} DateElemCondition addConditions(DateElem... elems)
+    {static} DateElemCondition orConditions(DateElem... elems)
+    boolean matches(LocalDate date)
+}
+interface DateElemMatcher<T> {
+    boolean match(MatchContext context, T val)
+    boolean validate(MatchContext matchContext)
+}
+abstract class AbstractDateElemMatcher<Integer> {
+    #int getPositiveValue(Integer val, MatchContext matchContext)
+}
+abstract class AbstractLocalDateElemMatcher<LocalDate> {
+    #int getPositiveValue(Integer val, MatchContext matchContext)
+}
+class ListDateElemMatcher {
+    -int[] values
+}
+class RangeDateElemMatcher {
+    -int fromVal
+    -int toVal
+}
+class SingleDateElemMatcher {
+    -int expected
+}
+class FuncElemMatcher {
+    -String funcName
+}
+class YmdDateElemMatcher {
+    -Integer year
+    -Integer month
+    -Integer day
+}
+DateElemMatcher ..> MatchContext
+AbstractDateElemMatcher <|-- ListDateElemMatcher
+AbstractDateElemMatcher <|-- RangeDateElemMatcher
+AbstractDateElemMatcher <|-- SingleDateElemMatcher
+AbstractDateElemMatcher <|-- YmdDateElemMatcher
+AbstractLocalDateElemMatcher <|-- FuncElemMatcher
+
+DateElemMatcher <|.. AbstractDateElemMatcher
+DateElemMatcher <|.. AbstractLocalDateElemMatcher
+class MatchContext {
+    int min
+    int max
+}
+DateElem <|-- AbstractDateElem
+DateElem <|-- DateElemCondition
+abstract class YYYYMMDDElem {
+    #boolean compare(LocalDate date, boolean less, boolean greater, boolean eq)
+}
+
+class DateExpr {
+    - List<DateElem> dateElems;
+    DateExpr addDateElem(DateElem elem)
+}
+DateElem <|-- DateExpr
+
+AbstractDateElem <|-- YYYYMMDDElem
+
+class YearElem
+class FuncElem
+class MonthElem
+class WeekOfMonthElem
+class WeekOfMonthForDayElem
+class WeekOfYearElem
+class WeekOfYearForDayElem
+class DayOfWeekElem
+class DayOfMonthElem
+class DayOfYearElem
+AbstractDateElem <|-- YearElem
+AbstractDateElem <|-- FuncElem
+AbstractDateElem <|-- MonthElem
+AbstractDateElem <|-- WeekOfMonthElem
+AbstractDateElem <|-- WeekOfMonthForDayElem
+AbstractDateElem <|-- WeekOfYearElem
+AbstractDateElem <|-- WeekOfYearForDayElem
+AbstractDateElem <|-- DayOfWeekElem
+AbstractDateElem <|-- DayOfMonthElem
+AbstractDateElem <|-- DayOfYearElem
+
+class LessThanYMDElem
+class LessEqYMDElem
+class GreaterThanYMDElem
+class GreaterEqYMDElem
+class EqYMDElem
+YYYYMMDDElem <|-- LessThanYMDElem
+YYYYMMDDElem <|-- LessEqYMDElem
+YYYYMMDDElem <|-- GreaterThanYMDElem
+YYYYMMDDElem <|-- GreaterEqYMDElem
+YYYYMMDDElem <|-- EqYMDElem
+
+@enduml
